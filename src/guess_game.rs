@@ -1,10 +1,10 @@
 use rand::Rng;
+use std::cmp::Ordering;
 use std::io::{self, Write};
 
+#[allow(dead_code)]
 fn validate_guess(guess: &str) -> (bool, Result<i32, &str>) {
-    let guess = guess.parse::<i32>();
-
-    match guess {
+    match guess.trim().parse::<i32>() {
         Ok(guess) => {
             if guess > 10 || guess < 0 {
                 return (false, Err("No. out of range"));
@@ -22,6 +22,7 @@ fn validate_guess(guess: &str) -> (bool, Result<i32, &str>) {
     }
 }
 
+#[allow(dead_code)]
 pub fn guess() {
     println!("Guess the number!");
 
@@ -33,16 +34,50 @@ pub fn guess() {
     io::stdin()
         .read_line(&mut guess)
         .expect("Failed to read line!");
-    guess = guess.trim().to_string();
 
     let (is_valid, random_number) = validate_guess(&guess);
     let res = if is_valid {
-        format!("You guessed: {guess}\nGuessed Correctly!")
+        format!("You guessed: {guess}Guessed Correctly!")
     } else {
         match random_number {
-            Ok(res) => format!("You guessed: {guess}\nRandom No: {res} Game Over!"),
+            Ok(res) => format!("You guessed: {guess}Random No: {res} Game Over!"),
             Err(err) => format!("{err}"),
         }
     };
     println!("{res}");
+}
+
+#[allow(dead_code)]
+fn validate_guess_iterative(guess: &str, random: i32) -> bool {
+    match guess.trim().parse::<i32>() {
+        Ok(guess) => match guess.cmp(&random) {
+            Ordering::Equal => return true,
+            Ordering::Less => println!("Too Small!"),
+            Ordering::Greater => println!("Too Big!"),
+        },
+        Err(_err) => println!("Invalid Number"),
+    }
+    false
+}
+
+#[allow(dead_code)]
+pub fn guess_iterative() {
+    println!("\nGuess the number!");
+
+    let random = rand::thread_rng().gen_range(0..=100);
+    let mut is_valid = false;
+
+    while is_valid == false {
+        print!("Enter your guess(1-100): ");
+        io::stdout().flush().expect("Failed to flush stdout!");
+
+        let mut guess = String::new();
+
+        io::stdin()
+            .read_line(&mut guess)
+            .expect("Failed to read line!");
+
+        is_valid = validate_guess_iterative(&guess, random);
+    }
+    println!("Guessed Correctly!");
 }
