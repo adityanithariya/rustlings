@@ -65,9 +65,7 @@ pub fn guess_iterative() {
     println!("\nGuess the number!");
 
     let random = rand::thread_rng().gen_range(0..=100);
-    let mut is_valid = false;
-
-    while is_valid == false {
+    loop {
         print!("Enter your guess(1-100): ");
         io::stdout().flush().expect("Failed to flush stdout!");
 
@@ -77,7 +75,9 @@ pub fn guess_iterative() {
             .read_line(&mut guess)
             .expect("Failed to read line!");
 
-        is_valid = validate_guess_iterative(&guess, random);
+        if validate_guess_iterative(&guess, random) {
+            break;
+        }
     }
     println!("Guessed Correctly!");
 }
