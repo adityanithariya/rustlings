@@ -22,11 +22,10 @@ pub fn ownership() {
         1. Can have more than one immutable reference at a time
         2. Can have only one mutable reference at a time
     */
-
     first_word(&x);
 }
 
-fn calculate_length(x: &String) -> usize {
+fn calculate_length(x: &str) -> usize {
     x.len()
 }
 
@@ -41,7 +40,7 @@ fn dangle() -> &String { // This is a example of dangling references of string s
 }
 */
 
-fn first_word(s: &String) -> usize {
+fn first_word(s: &str) -> usize {
     for (i, &item) in s.as_bytes().iter().enumerate() {
         if item == b' ' {
             return i;
