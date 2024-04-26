@@ -2,7 +2,7 @@ use std::f32::consts::PI;
 
 #[allow(dead_code)]
 #[derive(Debug)]
-enum Shape {
+pub enum Shape {
     Circle {
         radius: f32,
     },
@@ -64,6 +64,7 @@ impl Shape {
     }
 }
 
+#[allow(dead_code)]
 pub fn my_struct() {
     let shapes = vec![
         Shape::Circle { radius: 10.0 },
