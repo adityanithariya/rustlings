@@ -97,25 +97,31 @@ pub mod sorting {
     where
         T: PartialEq + PartialOrd + Display + Debug + Copy,
     {
+        if start >= end {
+            return;
+        }
         let pivot = nums[start];
         let mut p = start + 1;
         let mut q = end;
         while p <= q {
-            println!("{p}, {q}");
             if nums[p] <= pivot {
                 p += 1;
             }
             if nums[q] >= pivot {
                 q -= 1;
             }
-            if nums[p] > pivot && nums[q] < pivot {
+            if nums[p] > pivot && nums[q] < pivot && p < q {
                 nums.swap(p, q);
                 p += 1;
                 q -= 1;
             }
         }
-        nums.swap(start, q);
-        quick_sort(nums, start, q - 1);
+        if pivot > nums[q] {
+            nums.swap(start, q);
+        }
+        if q != 0 {
+            quick_sort(nums, start, q - 1);
+        }
         quick_sort(nums, q + 1, end);
     }
 }
